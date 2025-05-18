@@ -1,35 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// App layout for PopSim - excluding the core simulation component for now
 
-function App() {
-  const [count, setCount] = useState(0)
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import Sidebar from "./components/Sidebar";
+import Header from "./components/Header";
+import SimulationDashboard from "./components/simulation/SimulationDashboard";
+import SettingsPanel from "./components/SettingsPanel";
 
+export default function App() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <Router>
+      <div className="flex flex-row h-screen w-screen overflow-hidden bg-gray-100">
+        {/* Sidebar */}
+        <Sidebar />
 
-export default App
+        {/* Main content area */}
+        <div className="flex flex-col flex-1">
+          {/* Header */}
+          <Header />
+
+          {/* Content */}
+          <main className="flex flex-1 overflow-hidden">
+            {/* Simulation Area Placeholder */}
+            <div className="flex-1 bg-white p-4">
+              {/* Simulation component goes here */}
+              <Routes>
+                <Route path="/" element={<SimulationDashboard />} />
+                {/* Additional routes can go here */}
+              </Routes>
+            </div>
+
+            {/* Settings/Control Panel */}
+            <SettingsPanel />
+          </main>
+        </div>
+
+        <Toaster position="top-right" reverseOrder={false} />
+      </div>
+    </Router>
+  );
+}
