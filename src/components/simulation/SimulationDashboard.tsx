@@ -1,8 +1,14 @@
 import React from 'react'
+import Entity from './useEntities'
+import Scene from './Scene'
+import useEntities from './useEntities';
 
 const SimulationDashboard = () => {
+  useEntities();
   return (
-    <div>SimulationDashboard</div>
+    <div className='w-full h-full'>
+      <Scene />
+    </div>
   )
 }
 

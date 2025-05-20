@@ -6,12 +6,11 @@ import { Toaster } from "react-hot-toast";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import SimulationDashboard from "./components/simulation/SimulationDashboard";
-import SettingsPanel from "./components/SettingsPanel";
 
 export default function App() {
   return (
     <Router>
-      <div className="flex flex-row h-screen w-screen overflow-hidden bg-gray-100">
+      <div className="flex flex-row h-screen w-screen overflow-hidden bg-gray-100 text-black">
         {/* Sidebar */}
         <Sidebar />
 
@@ -30,9 +29,6 @@ export default function App() {
                 {/* Additional routes can go here */}
               </Routes>
             </div>
-
-            {/* Settings/Control Panel */}
-            <SettingsPanel />
           </main>
         </div>
 
