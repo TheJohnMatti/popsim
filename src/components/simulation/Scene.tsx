@@ -60,4 +60,4 @@ const Scene = () => {
   return <div className="w-[calc(100%-48px)] h-full ml-[48px]" ref={mountRef} />
 }
 
-export default Scene
+export default Scene;
