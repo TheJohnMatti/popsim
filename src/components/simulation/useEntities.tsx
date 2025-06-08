@@ -1,51 +1,44 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import * as THREE from 'three'
 import useSceneStore from '../../stores/useSceneStore'
-import { useEnitityStore } from '../../stores/useEntityStore';
+import { useEnitityStore } from '../../stores/useEntityStore'
 
 type EntityObjectType = {
-    geometry: THREE.SphereGeometry,
-    material: THREE.MeshStandardMaterial,
-    sphere: THREE.Mesh,
+    geometry: THREE.CircleGeometry,
+    material: THREE.MeshBasicMaterial,
+    mesh: THREE.Mesh,
 }
 
 const useEntities = () => {
-    const scene = useSceneStore((state) => state.scene);
-    const {entities} = useEnitityStore();
+    const scene = useSceneStore((state) => state.scene)
+    const { entities } = useEnitityStore()
 
     useEffect(() => {
-        console.log('Scene:', scene);
+        if (!scene) return
+        const entityObjects: EntityObjectType[] = []
 
-        if (!scene) return;
-        const entityObjects: EntityObjectType[] = [];
-
-        entities.forEach((entity, index) => {
-            console.log('Entity:', entity);
-            // Sphere (entity)
-            const geometry = new THREE.SphereGeometry(1, 32, 32);
-            const material = new THREE.MeshStandardMaterial({ color: 0x0077ff });
-            const sphere = new THREE.Mesh(geometry, material);
-            sphere.position.set(entity.position.x, entity.position.y, 0);
-            const entityObject = {
-                geometry,
-                material,
-                sphere,
-            }
-            entityObjects.push(entityObject);
-            scene.add(entityObject.sphere)
-            console.log('Entity added to scene:', entityObject.sphere);
+        entities.forEach((entity) => {
+            // Use CircleGeometry for 2D circles
+            const radius = entity.radius ?? 1
+            const geometry = new THREE.CircleGeometry(radius, 32)
+            // Optionally randomize color or use entity.color
+            const color = entity.color ?? 0x0077ff
+            const material = new THREE.MeshBasicMaterial({ color })
+            const mesh = new THREE.Mesh(geometry, material)
+            mesh.position.set(entity.position.x, entity.position.y, 0)
+            entityObjects.push({ geometry, material, mesh })
+            scene.add(mesh)
         })
 
-        // Cleanup function to remove the entity from the scene
+        // Cleanup
         return () => {
-            console.log('Cleaning up entities');
             entityObjects.forEach((entity) => {
-                scene.remove(entity.sphere);
+                scene.remove(entity.mesh)
                 entity.geometry.dispose()
                 entity.material.dispose()
             })
-        };
-    }, [scene, entities]);
+        }
+    }, [scene, entities])
 }
 
-export default useEntities;
+export default useEntities

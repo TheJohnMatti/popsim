@@ -3,8 +3,6 @@ import * as THREE from 'three'
 import useSceneStore from '../../stores/useSceneStore'
 
 const Scene = () => {
-
-
   const mountRef = useRef<HTMLDivElement>(null)
   const scene = useSceneStore((state) => state.scene)
   const setScene = useSceneStore((state) => state.setScene)
@@ -12,9 +10,9 @@ const Scene = () => {
   // Create and store the scene if it doesn't exist
   useEffect(() => {
     if (!scene) {
-        const scene = new THREE.Scene()
-        scene.background = new THREE.Color(0xdddddd)
-        setScene(scene)
+      const scene = new THREE.Scene()
+      scene.background = new THREE.Color(0xdddddd)
+      setScene(scene)
     }
   }, [scene, setScene])
 
@@ -24,26 +22,27 @@ const Scene = () => {
     const width = mountRef.current.clientWidth
     const height = mountRef.current.clientHeight
 
-    // Camera, Renderer
-    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000)
-    camera.position.z = 5
+    // Orthographic Camera for 2D look
+    const aspect = width / height
+    const viewSize = 20 // Adjust for your simulation scale
+    const camera = new THREE.OrthographicCamera(
+      (-aspect * viewSize) / 2, // left
+      (aspect * viewSize) / 2,  // right
+      viewSize / 2,             // top
+      -viewSize / 2,            // bottom
+      -100,                     // near
+      100                       // far
+    )
+    camera.position.set(0, 0, 10)
+    camera.lookAt(0, 0, 0)
 
     const renderer = new THREE.WebGLRenderer({ antialias: true })
     renderer.setSize(width, height)
     mountRef.current.appendChild(renderer.domElement)
 
-    // Lights
-    const pointLight = new THREE.PointLight(0xffffff, 10, 100)
-    pointLight.position.set(1, 1, 1)
-    scene.add(pointLight)
-
-    const ambientLight = new THREE.AmbientLight(0xffffff, 5)
-    scene.add(ambientLight)
-
     // Animation loop
     const animate = () => {
       requestAnimationFrame(animate)
-    //   sphere.rotation.y += 0.01
       renderer.render(scene, camera)
     }
     animate()
@@ -51,8 +50,6 @@ const Scene = () => {
     // Cleanup
     return () => {
       mountRef.current?.removeChild(renderer.domElement)
-      scene.remove(pointLight)
-      scene.remove(ambientLight)
       renderer.dispose()
     }
   }, [scene])
