@@ -26,3 +26,5 @@ const useGroupStore = create<GroupStore>(() => ({
         }
     ]
 }));
+
+export default useGroupStore;
