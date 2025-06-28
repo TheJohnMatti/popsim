@@ -1,21 +1,15 @@
 import { create } from 'zustand'
-import type { EntityAction, Position } from '../utils';
-
-interface Entity {
-    id: string;
-    position: Position;
-    action: EntityAction;
-    color?: number;
-    radius?: number; // Optional radius for circle entities
-}
+import { Position, Velocity, type EntityAction } from '../utils';
+import { Entity } from '../utils/Entity';
 
 export interface EnitityStore {
     entities: Entity[];
     addEntity: (entity: Entity) => void;
     removeEntity: (id: string) => void;
+    updateEntity: (id: string, updates?: Partial<Entity>) => void; // Optional update method
 }
 export const useEnitityStore = create<EnitityStore>((set, get)=>({
-    entities: [{id: crypto.randomUUID(), position: {x: 0, y: 0}, action: 'idle'}],
+    entities: [new Entity()],
     addEntity: (entity: Entity) => {
         const radius = entity.radius ?? 1;
         const start = entity.position;
@@ -95,4 +89,15 @@ export const useEnitityStore = create<EnitityStore>((set, get)=>({
             entities: state.entities.filter((entity) => entity.id !== id),
         }));
     },
+    updateEntity: (id: string, updates?: Partial<Entity>) => {
+        set((state) => {
+            const entities = state.entities.map((entity) => {
+                if (entity.id === id) {
+                    return { ...entity, ...updates };
+                }
+                return entity;
+            });
+            return { entities };
+        });
+    }
 }))
