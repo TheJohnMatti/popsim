@@ -4,18 +4,22 @@ import Scene from './Scene'
 import useEntities from './useEntities';
 import useRender from './useRender';
 import useZoom from './useZoom';
+import Data from '../data/Data';
+import useWasm from '../../wasm/useWasm';
 
 const SimulationDashboard = () => {
-  const ref = useRef<HTMLDivElement>(null);
 
   useEntities();
   useRender();
-  useZoom(ref.current);
+
+  useWasm();
+
   return (
-    <div className='w-full h-full' ref={ref}>
+    <div className='w-full h-full grid' style={{gridTemplateColumns: '5fr 1fr'}}>
       <Scene />
+      <Data />
     </div>
   )
 }
 
-export default SimulationDashboard
+export default SimulationDashboard;

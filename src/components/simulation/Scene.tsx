@@ -2,15 +2,16 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import useSceneStore from '../../stores/useSceneStore'
 import useOptionsStore from '../../stores/useOptionsStore'
+import useZoom from './useZoom'
+import Slider from '@mui/material/Slider';
 
 const Scene = () => {
-
-  const {zoom} = useOptionsStore();
-
+  const {zoom, setZoom } = useOptionsStore();
   const mountRef = useRef<HTMLDivElement>(null)
   const scene = useSceneStore((state) => state.scene)
   const setScene = useSceneStore((state) => state.setScene)
   const cameraRef = useRef<THREE.OrthographicCamera | null>(null);
+  useZoom(mountRef.current);
 
   // Create and store the scene if it doesn't exist
   useEffect(() => {
@@ -67,29 +68,23 @@ const Scene = () => {
   }, [zoom]) 
 
 
-  const zoomBarSize = useMemo(() => {
-    const x = zoom;
-    if (Math.abs(x - 0.25) < 1E-2) return 0;
-    if (Math.abs(x - 3) < 1E-2) return 1;
-    return (x-0.25)/3;
-
-  }, [zoom])
-
-
   return (
-    <>
-      <div className="w-[calc(100%-48px)] h-full ml-[48px]" ref={mountRef} />
-      <div className="absolute bottom-6 right-6 bg-white bg-opacity-80 rounded px-4 py-2 shadow text-sm z-10 flex items-center min-w-[120px]">
+    <div className="relative h-full ml-[48px]" ref={mountRef}>
+      <div className="absolute bottom-4 right-4 bg-white bg-opacity-80 rounded px-4 py-2 shadow text-sm z-10 flex items-center min-w-[180px]">
         <span className="mr-2">Zoom</span>
-        <div className="relative w-24 h-2 bg-gray-300 rounded">
-          <div
-            className="absolute top-0 left-0 h-2 bg-blue-500 rounded"
-            style={{ width: `${(zoomBarSize) * 100}%`, minWidth: '8px' }}
-          />
-        </div>
+        <Slider
+          value={zoom}
+          min={0.25}
+          max={3}
+          step={0.01}
+          onChange={(_, value) => setZoom && setZoom(value)}
+          sx={{ width: 100, mx: 2 }}
+          size="small"
+          aria-label="Zoom slider"
+        />
         <span className="ml-2 w-8 text-right">{zoom.toFixed(2)}</span>
       </div>
-    </>
+    </div>
   )
 }
 

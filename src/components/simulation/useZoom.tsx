@@ -17,7 +17,7 @@ const useZoom = (el: HTMLElement | null) => {
             el?.removeEventListener("wheel", handleZoom);
         }
 
-    }, [el])
+    }, [el, _handleZoom])
   
 }
 
