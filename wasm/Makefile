@@ -1,5 +1,5 @@
 # Variables
-SRC = .\src\main.cpp .\src\vec.cpp .\src\entity.cpp .\src\engine.cpp
+SRC = .\src\main.cpp .\src\vec.cpp .\src\entity.cpp .\src\engine.cpp .\src\id.cpp .\src\api.cpp
 OUT_DIR = ..\src\wasm
 OUT_WASM = $(OUT_DIR)\index.out.wasm
 OUT = $(OUT_DIR)\index.out.js
@@ -16,8 +16,8 @@ build:
 	-s MODULARIZE=1 \
 	-s EXPORT_ES6=1 \
 	-s ENVIRONMENT=web \
-	-s EXPORTED_FUNCTIONS="['_main', '_print_test']" \
-	-s EXPORTED_RUNTIME_METHODS=ccall
+	-s EXPORTED_FUNCTIONS="['_init_engine', '_tick', '_malloc', '_free']" \
+	-s EXPORTED_RUNTIME_METHODS='["ccall", "HEAPF32"]'
 
 clean:
 	del "$(OUT)" "$(OUT_WASM)"

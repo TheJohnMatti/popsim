@@ -1,2 +1,3 @@
-#define SUCC 1
+
+#define OK 1
 #define ERR 0

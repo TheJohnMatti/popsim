@@ -1,6 +1,6 @@
 #include <iostream>
-#include "../inc/vec.h"
-#include "../inc/id.h"
+#include "./vec.hpp"
+#include "./id.hpp"
 
 
 class Entity {

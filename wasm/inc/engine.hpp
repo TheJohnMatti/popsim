@@ -1,14 +1,15 @@
 #include <iostream>
 #include <vector>
-#include "../inc/entity.h"
+#include "../inc/entity.hpp"
 
 
 class Engine {
     public:
-        Engine();
-        ~Engine();
+        static Engine& getInstance();
         void tick();
     private:
+        Engine();
+        ~Engine();
         std::vector<Entity> entities;
         int _elapsedTime{0};
 };

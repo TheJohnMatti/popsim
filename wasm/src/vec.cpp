@@ -1,4 +1,4 @@
-#include "../inc/vec.h"
+#include "../inc/vec.hpp"
 
 Vector2::Vector2() : _x{0}, _y{0} {}
 
