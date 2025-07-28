@@ -1,5 +1,5 @@
 # Variables
-SRC = .\src\main.cpp
+SRC = .\src\main.cpp .\src\vec.cpp .\src\entity.cpp .\src\engine.cpp
 OUT_DIR = ..\src\wasm
 OUT_WASM = $(OUT_DIR)\index.out.wasm
 OUT = $(OUT_DIR)\index.out.js
